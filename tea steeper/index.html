@@ -1,0 +1,203 @@
+  <!DOCTYPE html>
+  <html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="canonical" href="https://weather-pwa-sample.firebaseapp.com/final/">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather PWA</title>
+    <link rel="stylesheet" type="text/css" href="styling/index.css">
+
+    <!-- TODO add manifest here -->
+    <link rel="manifest" href="/manifest.json">
+    <!-- Add to home screen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Weather PWA">
+    <link rel="apple-touch-icon" href="images/icons/icon-152x152.png">
+    <meta name="msapplication-TileImage" content="images/icons/icon-144x144.png">
+    <meta name="msapplication-TileColor" content="#2F3BA2">
+  </head>
+  <body>
+
+    <header class="header">
+      <div class="header_back">
+        <!--<a id="header_go_back_top"></a>-->
+        <!--<a id="header_go_back_bottom"></a>-->
+        <img src="/images/left-arrow-white.svg" alt="arrow" style="height: 20px; width:20px;" hidden="true">
+      </div>
+      <h1 class="header__title">Tea Steeper</h1>
+      <!--<a id="header_drop_menu"></a>-->
+    </header>
+
+    <!--Removed ALL of <main> code -->
+
+    <!--Removed div class="dialog container" code -->
+
+  <!--Commented out content loader
+  <div class="loader">
+    <svg viewBox="0 0 32 32" width="32" height="32">
+      <circle id="spinner" cx="16" cy="16" r="14" fill="none"></circle>
+    </svg>
+  </div>
+
+  End of Content loader -->
+  <div class="timer_container">
+    <div class="timer_countdown">
+      <p id="counter_display"><span id="black_tea_min">00</span> : <span id="black_tea_sec">00</span></p>
+      <p id="tea-notification" hidden="true">Tea is Ready!</p>
+      <audio id="chimes" type="audio/wav" src="/audio/chimes.wav"/></audio>
+    </div>
+  </div>
+  <div class="button_container">
+    <button class="button_tea" id="black_tea_start_steeping">black tea</button>
+    <button class="button_tea" id="green_tea_start_steeping">green tea</button>
+    <button class="button_tea" id="herbal_tea_start_steeping">herbal tea</button>
+    <button class="button_tea" id="cancel_steeping">Cancel</button>
+  </div>
+
+  <div class="tea_info_container">
+
+  </div>
+
+
+  <!-- Uncomment the line below when ready to test with fake data -->
+  <script src="scripts/app.js" async></script>
+  <!--<script src="scripts/tapp.js" async></script>-->
+  <script type="text/javascript">
+        /*
+    Creates tea objects for green, black and herbal tea
+    Each object has 3 attributes; min and max steep time 
+    and temperature. 
+    */
+    var black_tea = {min_time:"2",max_time: "3", temp: 97};
+    var green_tea = {min_time:"1",max_time:"1", temp: 79};
+    var herbal_tea = {min_time:"4",max_time: "6", temp: 98};
+
+    var timer;
+
+    var audio = document.getElementById("chimes");
+    /*Create a countdown timer that takes in a specified 
+    time in seconds and a display for the seconds and minutes
+    once the steep buttonis presse()
+    */
+    function countdown(time, secs, mins){
+      var seconds = document.getElementById(secs);
+      var minutes = document.getElementById(mins);
+
+      var secondsNum = time % 60;
+      var minutesNum = Math.floor(time / 60);
+
+      if (secondsNum < 10)
+        seconds.innerHTML = "0"+secondsNum;
+      else
+        seconds.innerHTML = secondsNum;
+      minutes.innerHTML = "0" + minutesNum;
+      //When the amount of time reaches zero, clear the timer
+      //display a message to the user and enable all the buttons
+      if(time < 1){
+        clearTimeout(timer);
+        audio.play();
+        document.getElementById("counter_display").style.display = "none";
+        document.getElementById("tea-notification").removeAttribute("hidden");
+        displayTea(); 
+      }else{
+        time--;
+        timer = setTimeout( function(){
+          countdown(time,secs,mins);
+        },1000);
+      }
+    }
+
+    //"Add a button listener which starts a countdown object for" black tea
+    document.getElementById("black_tea_start_steeping").addEventListener("click", function(){
+      document.getElementById("counter_display").style.display = "inline-block";
+      document.getElementById("tea-notification").setAttribute("hidden","true");
+      hideTea();
+      var time = 60 * black_tea.max_time;
+      countdown(time,"black_tea_sec","black_tea_min");
+    });
+    //"" green tea
+    document.getElementById("green_tea_start_steeping").addEventListener("click", function(){
+      document.getElementById("counter_display").style.display = "inline-block";
+      document.getElementById("tea-notification").setAttribute("hidden","true");
+      hideTea();
+      var time = 60 * green_tea.max_time;
+      //CHANGE THIS SO IT USES ITS OWN LABEL 
+      countdown(time,"black_tea_sec","black_tea_min");
+    });
+    //"" herbal tea
+    document.getElementById("herbal_tea_start_steeping").addEventListener("click", function(){
+      document.getElementById("counter_display").style.display = "inline-block";
+      document.getElementById("tea-notification").setAttribute("hidden","true");
+      hideTea();
+      var time = 60 * herbal_tea.max_time;
+      //CHANGE THIS SO IT USES ITS OWN LABEL 
+      countdown(time,"black_tea_sec","black_tea_min");
+    });
+
+    /*
+    Display the hidden Tea buttons and hides the cancel button 
+     */
+    function displayTea(){
+      document.getElementById("black_tea_start_steeping").disabled = false;
+      document.getElementById("green_tea_start_steeping").disabled = false;
+      document.getElementById("herbal_tea_start_steeping").disabled = false;
+      document.getElementById("cancel_steeping").style.display = "none";
+      document.getElementById("green_tea_start_steeping").style.display = "block";
+      document.getElementById("black_tea_start_steeping").style.display = "block";            
+      document.getElementById("herbal_tea_start_steeping").style.display = "block";
+    }
+
+    /*
+    Used to hide the tea buttons and display the cancel button
+     */
+    function hideTea(){
+      document.getElementById("cancel_steeping").style.display = "block";
+      document.getElementById("green_tea_start_steeping").style.display = "none";
+      document.getElementById("black_tea_start_steeping").style.display = "none";            
+      document.getElementById("herbal_tea_start_steeping").style.display = "none";
+      document.getElementById("green_tea_start_steeping").disabled = true;
+      document.getElementById("black_tea_start_steeping").disabled = true;
+      document.getElementById("herbal_tea_start_steeping").disabled = true;
+    }
+
+    /*
+    Listener for the cancel button
+    */
+    document.getElementById("cancel_steeping").addEventListener("click", function(){
+      stopCountdown();
+    });
+
+    /**
+     * Function that plays a chime. If the audio is paused, it is played
+     * If it is not then it is started at the 0secs.
+     * @return {[type]} [description]
+     */
+     function play(){
+      var audio = document.getElementById("chimes");
+      if(audio.paused){
+        audio.play();
+      }else{
+        audio.currentTime = 0;
+      }
+    }
+
+    /**
+     * [stopCountdown is used to stop the countdown timer, and redisplay 
+     * tea optons to allow the user to steep another tea]
+     * @return {[void]} [description]
+     */
+     function stopCountdown(){
+      clearTimeout(timer);
+      document.getElementById("black_tea_min").innerHTML = "00";
+      document.getElementById("black_tea_sec").innerHTML = "00";
+      displayTea(); 
+    }
+
+
+  </script>
+
+
+</body>
+</html>
