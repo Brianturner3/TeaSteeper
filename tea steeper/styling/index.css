@@ -10,7 +10,7 @@ html, body {
   font-family: 'Lato', sans-serif;
   font-weight: 300;
   font-display: optional;
-  color: white;
+  color: black;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
 
@@ -41,12 +41,12 @@ body {
   -webkit-align-content: stretch;
   -ms-flex-line-pack: stretch;
   align-content: stretch;
-  background-image: url("/images/bkg.jpg"); }
+  background-color: white; }
 
 .header {
   width: 100%;
   height: 56px;
-  color: #FFF;
+  color: #000;
   background: transparent;
   position: fixed;
   text-align: center;
@@ -185,7 +185,7 @@ body {
   height: auto;
   width: 328px;
   /* position: absolute; */
-  color: white;
+  color: black;
   margin: 0;
   font-size: .6em;
   background: transparent;
@@ -194,6 +194,7 @@ body {
 
 /*Following style for the button container*/
 .button_container {
+  height: auto;
   display: block;
   position: relative;
   margin-top: 6em;
@@ -213,8 +214,8 @@ body {
   flex: 1 1 auto;
   margin: 10px;
   padding: 20px;
-  border: 2px solid white;
-  color: white;
+  border: 2px solid black;
+  color: black;
   text-align: center;
   text-transform: uppercase;
   position: relative;
@@ -224,11 +225,122 @@ body {
   width: 180px; }
 
 #cancel_steeping {
+  display: none;
+  top: 6em; }
+
+#logo {
+  height: 75px;
+  width: 75px;
+  position: fixed;
+  bottom: .1em;
+  right: .1em; }
+
+/*
+This is styling for the tea cup
+*/
+#teacup_object {
   display: none; }
 
+.water_drop {
+  position: relative;
+  opacity: 0;
+  top: 0px;
+  left: 65px;
+  height: 15px;
+  width: 15px;
+  border-radius: 100%;
+  background-color: #3498db;
+  -webkit-animation: drop 1s cubic-bezier(0.55, 0.24, 0.18, 1) infinite;
+  -moz-animation: drop 1s cubic-bezier(0.55, 0.24, 0.18, 1) infinite;
+  animation: drop 1s cubic-bezier(0.55, 0.24, 0.18, 1) infinite; }
+
+.water_drop:nth-child(2) {
+  -webkit-animation-delay: 0.8s;
+  -moz-animation-delay: 0.8s;
+  animation-delay: 0.8s; }
+
+.water_drop:before {
+  content: "";
+  position: relative;
+  top: -25px;
+  left: 3px;
+  width: 5px;
+  height: 5px;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 10px solid #3498db; }
+
+#handle {
+  width: 50px;
+  height: 50px;
+  border-radius: 0 20% 90% 10%;
+  background-color: white;
+  position: relative;
+  top: -85px;
+  left: 148px;
+  border-bottom: solid 5px #34495e;
+  border-right: solid 8px #34495e;
+  border-left: solid 3px #34495e;
+  border-top: solid 8px #34485e;
+  box-sizing: border-box;
+  box-shadow: 10px 10px 20px 1px rgba(0, 0, 0, 0.3); }
+
+.glass {
+  width: 150px;
+  height: 95px;
+  border-radius: 0 0 50% 50%;
+  border-bottom: solid 5px #34495e;
+  border-right: solid 3px #34495e;
+  border-left: solid 3px #34495e;
+  border-top: solid 0px #34495e;
+  box-sizing: border-box;
+  background-color: #3498db;
+  border-top-width: 90px;
+  box-shadow: 10px 10px 20px 1px rgba(0, 0, 0, 0.3);
+  -webkit-animation: none;
+  -moz-animation: none;
+  animation: none; }
+
+@-webkit-keyframes fillglass {
+  from {
+    border-top-width: 90px; }
+  to {
+    border-top-width: 10px; } }
+@-webkit-keyframes drop {
+  from {
+    opacity: 0;
+    top: -25px; }
+  to {
+    opacity: 1;
+    top: 95px; } }
+@-moz-keyframes fillglass {
+  from {
+    border-top-width: 90px; }
+  to {
+    border-top-width: 10px; } }
+@-moz-keyframes drop {
+  from {
+    opacity: 0;
+    top: -25px; }
+  to {
+    opacity: 1;
+    top: 130px; } }
+@keyframes fillglass {
+  from {
+    border-top-width: 90px; }
+  to {
+    border-top-width: 10px; } }
+@keyframes drop {
+  from {
+    opacity: 0;
+    top: 0px; }
+  to {
+    opacity: 1;
+    top: 85px; } }
 .loader {
   left: 50%;
   top: 50%;
+  margin-top: 4em;
   position: fixed;
   -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%); }
@@ -284,7 +396,7 @@ body {
     transform: rotate(90deg); } }
 /*
 Media queries for Iphone 
- */
+*/
 /* ----------- iPhone 4 and 4S ----------- */
 /* Portrait and Landscape */
 /* Portrait */
@@ -293,7 +405,11 @@ Media queries for Iphone
 /* Portrait and Landscape */
 @media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2) {
   #tea-notification {
-    font-size: .4em; } }
+    font-size: .4em; }
+
+  #logo {
+    height: 50px;
+    width: 50px; } }
 /* Portrait */
 @media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait) {
   .timer_countdown {
@@ -328,7 +444,11 @@ Media queries for Iphone
 /* Portrait and Landscape */
 @media only screen and (min-device-width: 375px) and (max-device-width: 667px) and (-webkit-min-device-pixel-ratio: 2) {
   #tea-notification {
-    font-size: .4em; } }
+    font-size: .4em; }
+
+  #logo {
+    height: 50px;
+    width: 50px; } }
 /* Portrait */
 @media only screen and (min-device-width: 375px) and (max-device-width: 667px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait) {
   .timer_countdown {
@@ -363,7 +483,11 @@ Media queries for Iphone
 /* Portrait and Landscape */
 @media only screen and (min-device-width: 414px) and (max-device-width: 736px) and (-webkit-min-device-pixel-ratio: 3) {
   #tea-notification {
-    font-size: .4em; } }
+    font-size: .4em; }
+
+  #logo {
+    height: 50px;
+    width: 50px; } }
 /* Portrait */
 @media only screen and (min-device-width: 414px) and (max-device-width: 736px) and (-webkit-min-device-pixel-ratio: 3) and (orientation: portrait) {
   .timer_countdown {

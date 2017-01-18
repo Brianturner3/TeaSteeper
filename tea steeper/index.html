@@ -1,38 +1,36 @@
-  <!DOCTYPE html>
-  <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="canonical" href="https://weather-pwa-sample.firebaseapp.com/final/">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather PWA</title>
-    <link rel="stylesheet" type="text/css" href="styling/index.css">
+-  <!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tea Steeper</title>
+  <link rel="stylesheet" type="text/css" href="styling/index.css">
 
-    <!-- TODO add manifest here -->
-    <link rel="manifest" href="/manifest.json">
-    <!-- Add to home screen for Safari on iOS -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="Weather PWA">
-    <link rel="apple-touch-icon" href="images/icons/icon-152x152.png">
-    <meta name="msapplication-TileImage" content="images/icons/icon-144x144.png">
-    <meta name="msapplication-TileColor" content="#2F3BA2">
-  </head>
-  <body>
+  <!-- TODO add manifest here -->
+  <link rel="manifest" href="/manifest.json">
+  <!-- Add to home screen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Tea Steeper">
+  <link rel="apple-touch-icon" href="images/tea.png">
+  <meta name="msapplication-TileImage" content="images/tea.png">
+  <meta name="msapplication-TileColor" content="#42c0fb">
+</head>
+<body>
 
-    <header class="header">
-      <div class="header_back">
-        <!--<a id="header_go_back_top"></a>-->
-        <!--<a id="header_go_back_bottom"></a>-->
-        <img src="/images/left-arrow-white.svg" alt="arrow" style="height: 20px; width:20px;" hidden="true">
-      </div>
-      <h1 class="header__title">Tea Steeper</h1>
-      <!--<a id="header_drop_menu"></a>-->
-    </header>
+  <header class="header">
+    <div class="header_back">
+      <!--<a id="header_go_back_top"></a>-->
+      <!--<a id="header_go_back_bottom"></a>-->
+    </div>
+    <h1 class="header__title">Tea Steeper</h1>
+    <!--<a id="header_drop_menu"></a>-->
+  </header>
 
-    <!--Removed ALL of <main> code -->
+  <!--Removed ALL of <main> code -->
 
-    <!--Removed div class="dialog container" code -->
+  <!--Removed div class="dialog container" code -->
 
   <!--Commented out content loader
   <div class="loader">
@@ -46,9 +44,19 @@
     <div class="timer_countdown">
       <p id="counter_display"><span id="black_tea_min">00</span> : <span id="black_tea_sec">00</span></p>
       <p id="tea-notification" hidden="true">Tea is Ready!</p>
-      <audio id="chimes" type="audio/wav" src="/audio/chimes.wav"/></audio>
+      <audio id="chimes" type="audio/wav" src="/teasteeper/audio/chimes.wav"/></audio>
     </div>
   </div>
+
+  <div id="teacup_object">
+    <div class="loader">
+      <div class="water_drop"></div>
+      <div class="water_drop"></div>
+      <div class="glass" id="cup"></div>
+      <div id="handle"></div>
+    </div>
+  </div>
+
   <div class="button_container">
     <button class="button_tea" id="black_tea_start_steeping">black tea</button>
     <button class="button_tea" id="green_tea_start_steeping">green tea</button>
@@ -56,9 +64,7 @@
     <button class="button_tea" id="cancel_steeping">Cancel</button>
   </div>
 
-  <div class="tea_info_container">
-
-  </div>
+  <img src="/teasteeper/images/logo-black.png" alt="" id="logo">
 
 
   <!-- Uncomment the line below when ready to test with fake data -->
@@ -75,6 +81,8 @@
     var herbal_tea = {min_time:"4",max_time: "6", temp: 98};
 
     var timer;
+    var count = 0; //Keept track of the timer
+    var countdownlength = 30;
 
     var audio = document.getElementById("chimes");
     /*Create a countdown timer that takes in a specified 
@@ -100,8 +108,12 @@
         audio.play();
         document.getElementById("counter_display").style.display = "none";
         document.getElementById("tea-notification").removeAttribute("hidden");
+        document.getElementById("cup").style.WebkitAnimation = "none";
+        document.getElementById("cup").style.Animation = "none";
+        hideTeacup();
         displayTea(); 
       }else{
+        count--;
         time--;
         timer = setTimeout( function(){
           countdown(time,secs,mins);
@@ -114,6 +126,10 @@
       document.getElementById("counter_display").style.display = "inline-block";
       document.getElementById("tea-notification").setAttribute("hidden","true");
       hideTea();
+      displayTeacup();
+      document.getElementById("cup").style.WebkitAnimation = "fillglass 180s 1";
+      document.getElementById("cup").style.Animation = "fillglass 180s 1";
+      document.getElementById("cup").style.backgroundColor = "black";
       var time = 60 * black_tea.max_time;
       countdown(time,"black_tea_sec","black_tea_min");
     });
@@ -122,6 +138,10 @@
       document.getElementById("counter_display").style.display = "inline-block";
       document.getElementById("tea-notification").setAttribute("hidden","true");
       hideTea();
+      displayTeacup();
+      document.getElementById("cup").style.WebkitAnimation = "fillglass "+countdownlength+"s 1";
+      document.getElementById("cup").style.Animation = "fillglass "+countdownlength+"s 1";
+      document.getElementById("cup").style.backgroundColor = "#d0f0c0";
       var time = 60 * green_tea.max_time;
       //CHANGE THIS SO IT USES ITS OWN LABEL 
       countdown(time,"black_tea_sec","black_tea_min");
@@ -131,6 +151,10 @@
       document.getElementById("counter_display").style.display = "inline-block";
       document.getElementById("tea-notification").setAttribute("hidden","true");
       hideTea();
+      displayTeacup();
+      document.getElementById("cup").style.WebkitAnimation = "fillglass 360s 1";
+      document.getElementById("cup").style.Animation = "fillglass 360s 1";
+      document.getElementById("cup").style.backgroundColor = "#ffe0c0";
       var time = 60 * herbal_tea.max_time;
       //CHANGE THIS SO IT USES ITS OWN LABEL 
       countdown(time,"black_tea_sec","black_tea_min");
@@ -138,7 +162,7 @@
 
     /*
     Display the hidden Tea buttons and hides the cancel button 
-     */
+    */
     function displayTea(){
       document.getElementById("black_tea_start_steeping").disabled = false;
       document.getElementById("green_tea_start_steeping").disabled = false;
@@ -151,7 +175,7 @@
 
     /*
     Used to hide the tea buttons and display the cancel button
-     */
+    */
     function hideTea(){
       document.getElementById("cancel_steeping").style.display = "block";
       document.getElementById("green_tea_start_steeping").style.display = "none";
@@ -167,6 +191,9 @@
     */
     document.getElementById("cancel_steeping").addEventListener("click", function(){
       stopCountdown();
+      hideTeacup();
+      document.getElementById("cup").style.WebkitAnimation = "none";
+      document.getElementById("cup").style.Animation = "none";
     });
 
     /**
@@ -194,6 +221,18 @@
       document.getElementById("black_tea_sec").innerHTML = "00";
       displayTea(); 
     }
+
+    function displayTeacup(){
+      document.getElementById("teacup_object").style.display = "block";
+    }
+
+    function hideTeacup(){
+      document.getElementById("teacup_object").style.display = "none";
+    }
+
+    /**
+     * Check if the page has been redirected or closed
+     */
 
 
   </script>

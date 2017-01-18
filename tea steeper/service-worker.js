@@ -5,7 +5,7 @@ var cacheFiles = [
 	'/scripts/app.js',
 	'/styling/index.css',
 	'https://fonts.googleapis.com/css?family=Lato'
-]
+];
 
 self.addEventListener('install', function(e) {
 	console.log("[ServiceWorker] Installed");
